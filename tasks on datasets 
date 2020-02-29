@@ -5,7 +5,7 @@
     "colab": {
       "name": "Untitled2.ipynb",
       "provenance": [],
-      "authorship_tag": "ABX9TyOICPnaZ/diBW7t51XVtIl8",
+      "authorship_tag": "ABX9TyP/aVmV4J3ChdBI0VDhOSLj",
       "include_colab_link": true
     },
     "kernelspec": {
@@ -936,6 +936,97 @@
       "cell_type": "code",
       "metadata": {
         "id": "PZmcoByluIWG",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 142
+        },
+        "outputId": "4a6d7288-a0a3-45c5-b2da-0b8ba09450c6"
+      },
+      "source": [
+        "g=data.groupby('Gender')\n",
+        "g.agg(np.mean)"
+      ],
+      "execution_count": 53,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Roll No</th>\n",
+              "      <th>SSC Percentage</th>\n",
+              "      <th>inter_Diploma_percentage</th>\n",
+              "      <th>B.Tech_percentage</th>\n",
+              "      <th>Backlogs</th>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Gender</th>\n",
+              "      <th></th>\n",
+              "      <th></th>\n",
+              "      <th></th>\n",
+              "      <th></th>\n",
+              "      <th></th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>F</th>\n",
+              "      <td>58.142857</td>\n",
+              "      <td>82.911633</td>\n",
+              "      <td>84.632653</td>\n",
+              "      <td>71.199388</td>\n",
+              "      <td>0.714286</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>M</th>\n",
+              "      <td>59.617647</td>\n",
+              "      <td>78.460000</td>\n",
+              "      <td>77.991618</td>\n",
+              "      <td>56.994265</td>\n",
+              "      <td>6.558824</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "          Roll No  SSC Percentage  ...  B.Tech_percentage  Backlogs\n",
+              "Gender                             ...                             \n",
+              "F       58.142857       82.911633  ...          71.199388  0.714286\n",
+              "M       59.617647       78.460000  ...          56.994265  6.558824\n",
+              "\n",
+              "[2 rows x 5 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 53
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "n8e7mtmAwq61",
         "colab_type": "code",
         "colab": {}
       },
