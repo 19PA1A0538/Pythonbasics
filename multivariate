@@ -1,0 +1,794 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled5.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOvYWx1uzQpiHTeQWEt8KaU",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/19PA1A0538/Pythonbasics/blob/master/multivariate\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "2MvHgKtjVYeZ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import pandas as pd # for handling data in the form of tables\n",
+        "import numpy as np # For handling matrix\n",
+        "from sklearn.model_selection import train_test_split # For spliting the data into train and test\n",
+        "from sklearn.linear_model import LinearRegression # for using the model\n",
+        "import matplotlib.pyplot as plt # for plotting\n",
+        "from sklearn.metrics import r2_score"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6O0Kc5V8V09c",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 443
+        },
+        "outputId": "f31c0abf-7b01-4c9c-b94e-c11dca47306d"
+      },
+      "source": [
+        "pla=pd.read_csv('students_placement_data.csv')\n",
+        "pla"
+      ],
+      "execution_count": 39,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Roll No</th>\n",
+              "      <th>Gender</th>\n",
+              "      <th>Section</th>\n",
+              "      <th>SSC Percentage</th>\n",
+              "      <th>inter_Diploma_percentage</th>\n",
+              "      <th>B.Tech_percentage</th>\n",
+              "      <th>Backlogs</th>\n",
+              "      <th>registered_for_ Placement_Training</th>\n",
+              "      <th>placement status</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>1</td>\n",
+              "      <td>M</td>\n",
+              "      <td>A</td>\n",
+              "      <td>87.3</td>\n",
+              "      <td>65.30</td>\n",
+              "      <td>40.00</td>\n",
+              "      <td>18</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2</td>\n",
+              "      <td>F</td>\n",
+              "      <td>A</td>\n",
+              "      <td>89.0</td>\n",
+              "      <td>92.40</td>\n",
+              "      <td>71.45</td>\n",
+              "      <td>0</td>\n",
+              "      <td>yes</td>\n",
+              "      <td>Placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>3</td>\n",
+              "      <td>F</td>\n",
+              "      <td>A</td>\n",
+              "      <td>67.0</td>\n",
+              "      <td>68.00</td>\n",
+              "      <td>45.26</td>\n",
+              "      <td>13</td>\n",
+              "      <td>yes</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>4</td>\n",
+              "      <td>M</td>\n",
+              "      <td>A</td>\n",
+              "      <td>71.0</td>\n",
+              "      <td>70.40</td>\n",
+              "      <td>36.47</td>\n",
+              "      <td>17</td>\n",
+              "      <td>yes</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>5</td>\n",
+              "      <td>M</td>\n",
+              "      <td>A</td>\n",
+              "      <td>67.0</td>\n",
+              "      <td>65.50</td>\n",
+              "      <td>42.52</td>\n",
+              "      <td>17</td>\n",
+              "      <td>yes</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>...</th>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>112</th>\n",
+              "      <td>113</td>\n",
+              "      <td>M</td>\n",
+              "      <td>B</td>\n",
+              "      <td>81.1</td>\n",
+              "      <td>78.60</td>\n",
+              "      <td>35.84</td>\n",
+              "      <td>16</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>113</th>\n",
+              "      <td>114</td>\n",
+              "      <td>M</td>\n",
+              "      <td>B</td>\n",
+              "      <td>81.3</td>\n",
+              "      <td>85.12</td>\n",
+              "      <td>68.50</td>\n",
+              "      <td>0</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>114</th>\n",
+              "      <td>115</td>\n",
+              "      <td>M</td>\n",
+              "      <td>B</td>\n",
+              "      <td>83.5</td>\n",
+              "      <td>89.90</td>\n",
+              "      <td>76.30</td>\n",
+              "      <td>0</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>115</th>\n",
+              "      <td>116</td>\n",
+              "      <td>M</td>\n",
+              "      <td>B</td>\n",
+              "      <td>85.5</td>\n",
+              "      <td>90.63</td>\n",
+              "      <td>74.50</td>\n",
+              "      <td>0</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>116</th>\n",
+              "      <td>117</td>\n",
+              "      <td>M</td>\n",
+              "      <td>B</td>\n",
+              "      <td>80.0</td>\n",
+              "      <td>83.33</td>\n",
+              "      <td>65.53</td>\n",
+              "      <td>0</td>\n",
+              "      <td>NO</td>\n",
+              "      <td>Not placed</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>117 rows × 9 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "     Roll No Gender  ... registered_for_ Placement_Training  placement status\n",
+              "0          1      M  ...                                 NO        Not placed\n",
+              "1          2      F  ...                                yes            Placed\n",
+              "2          3      F  ...                                yes        Not placed\n",
+              "3          4      M  ...                                yes        Not placed\n",
+              "4          5      M  ...                                yes        Not placed\n",
+              "..       ...    ...  ...                                ...               ...\n",
+              "112      113      M  ...                                 NO        Not placed\n",
+              "113      114      M  ...                                 NO        Not placed\n",
+              "114      115      M  ...                                 NO        Not placed\n",
+              "115      116      M  ...                                 NO        Not placed\n",
+              "116      117      M  ...                                 NO        Not placed\n",
+              "\n",
+              "[117 rows x 9 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 39
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "UTVY55b4WIDe",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 194
+        },
+        "outputId": "595c66f8-4c67-4f23-9d25-2c005a2caa3f"
+      },
+      "source": [
+        "pla.isna().any()"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Roll No                               False\n",
+              "Gender                                False\n",
+              "Section                               False\n",
+              "SSC Percentage                        False\n",
+              "inter_Diploma_percentage              False\n",
+              "B.Tech_percentage                     False\n",
+              "Backlogs                              False\n",
+              "registered_for_ Placement_Training    False\n",
+              "placement status                      False\n",
+              "dtype: bool"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "4jJWeKNAWj-d",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "X=pla[['SSC Percentage','inter_Diploma_percentage']].values\n",
+        "y=pla['B.Tech_percentage'].values"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Jouv7RZcXZAV",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "590de1cf-c744-4779-c710-b6bb45bd8a39"
+      },
+      "source": [
+        "X.shape\n"
+      ],
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(117, 2)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 14
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "TLr1auofYmuH",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "913da109-11d5-4c5b-876d-b4d66e4d0cbf"
+      },
+      "source": [
+        "y.shape"
+      ],
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(117,)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "52lyev5MXoTs",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hwQzvTVoX7y7",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "50bda2ea-67e4-4a42-8fac-bd40246f3e9d"
+      },
+      "source": [
+        "model = LinearRegression()  \n",
+        "model.fit(X_train, y_train)"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 12
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "aL7M4y2wX9mR",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "07ba953a-32f3-4b19-b1ba-886fb07c7803"
+      },
+      "source": [
+        "model.intercept_"
+      ],
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "-8.937571546426739"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 13
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hA_aVNqeYCYc",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "dd788e23-70c9-4b59-9661-09f93fae97fe"
+      },
+      "source": [
+        "model.coef_"
+      ],
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([0.13815068, 0.74767901])"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 16
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "pFO8ryg_Yu3c",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "9b2fb74f-61b2-42aa-9a69-c17905302efb"
+      },
+      "source": [
+        "predicted_percentage=model.predict(X_test)\n",
+        "predicted_percentage.shape"
+      ],
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(24,)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 28
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "U7SMrkevY33s",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "18a8f145-6f3b-4a6a-d582-768eb3c20d07"
+      },
+      "source": [
+        "X_test.shape"
+      ],
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(24, 2)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "XjjXBzbrZckq",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "Actual_predicted=pd.DataFrame({\"Actual\": y_test.flatten(), \"Predicted\": predicted_percentage.flatten()})"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6hjVoXcTiNu9",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 767
+        },
+        "outputId": "54d7d8e5-ba7b-4625-989f-a11ad3970b25"
+      },
+      "source": [
+        "Actual_predicted"
+      ],
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Actual</th>\n",
+              "      <th>Predicted</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>71.49</td>\n",
+              "      <td>59.484282</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>81.10</td>\n",
+              "      <td>74.392371</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>62.98</td>\n",
+              "      <td>47.705109</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>68.70</td>\n",
+              "      <td>62.290592</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>61.02</td>\n",
+              "      <td>62.072696</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>5</th>\n",
+              "      <td>60.53</td>\n",
+              "      <td>38.585344</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>61.00</td>\n",
+              "      <td>63.657352</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>35.84</td>\n",
+              "      <td>61.034019</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>68.30</td>\n",
+              "      <td>64.213286</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>69.62</td>\n",
+              "      <td>69.647789</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>83.38</td>\n",
+              "      <td>69.474003</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>11</th>\n",
+              "      <td>45.26</td>\n",
+              "      <td>51.160697</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>12</th>\n",
+              "      <td>78.00</td>\n",
+              "      <td>72.075566</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>13</th>\n",
+              "      <td>54.18</td>\n",
+              "      <td>68.163101</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>14</th>\n",
+              "      <td>65.53</td>\n",
+              "      <td>64.418575</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>15</th>\n",
+              "      <td>52.00</td>\n",
+              "      <td>58.943065</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>16</th>\n",
+              "      <td>51.00</td>\n",
+              "      <td>61.571277</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>17</th>\n",
+              "      <td>73.13</td>\n",
+              "      <td>62.578180</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>18</th>\n",
+              "      <td>74.30</td>\n",
+              "      <td>71.039152</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>19</th>\n",
+              "      <td>63.41</td>\n",
+              "      <td>63.130881</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>20</th>\n",
+              "      <td>70.01</td>\n",
+              "      <td>66.634253</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>21</th>\n",
+              "      <td>55.70</td>\n",
+              "      <td>52.645689</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>22</th>\n",
+              "      <td>74.96</td>\n",
+              "      <td>69.414481</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>23</th>\n",
+              "      <td>70.85</td>\n",
+              "      <td>72.103695</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "    Actual  Predicted\n",
+              "0    71.49  59.484282\n",
+              "1    81.10  74.392371\n",
+              "2    62.98  47.705109\n",
+              "3    68.70  62.290592\n",
+              "4    61.02  62.072696\n",
+              "5    60.53  38.585344\n",
+              "6    61.00  63.657352\n",
+              "7    35.84  61.034019\n",
+              "8    68.30  64.213286\n",
+              "9    69.62  69.647789\n",
+              "10   83.38  69.474003\n",
+              "11   45.26  51.160697\n",
+              "12   78.00  72.075566\n",
+              "13   54.18  68.163101\n",
+              "14   65.53  64.418575\n",
+              "15   52.00  58.943065\n",
+              "16   51.00  61.571277\n",
+              "17   73.13  62.578180\n",
+              "18   74.30  71.039152\n",
+              "19   63.41  63.130881\n",
+              "20   70.01  66.634253\n",
+              "21   55.70  52.645689\n",
+              "22   74.96  69.414481\n",
+              "23   70.85  72.103695"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 30
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "cgjSQjO5iUEJ",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "e9cf6f01-854b-4610-b9a2-4e072761f4c6"
+      },
+      "source": [
+        "r2_score(y_test,predicted_percentage)"
+      ],
+      "execution_count": 35,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.20796768422106493"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 35
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "jUEnxadej3pv",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
